@@ -1,15 +1,66 @@
-import { View, ActivityIndicator } from "react-native";
+import { View, Alert, Button } from "react-native";
 
 /**
- * ActivityIndicator Component in React Native:
+ * Alert Component in React Native:
  *
- * Key Props:
- * - size: 'small' | 'large' | number
- * - color: Color of the spinner
- * - animating: Boolean to show/hide the indicator
- * - hidesWhenStopped: iOS only, hides when not animating
+ * Key Methods:
+ * - Alert.alert(): Shows an alert with title, message, and buttons
+ * - Alert.prompt(): iOS only, shows an alert with text input
+ *
+ * Button Props:
+ * - text: Button label
+ * - onPress: Button press handler
+ * - style: 'default' | 'cancel' | 'destructive' (iOS only)
  */
 export default function Index() {
+  // Basic alert with one button
+  const showBasicAlert = () => {
+    Alert.alert("Basic Alert", "This is a simple alert with one button", [
+      { text: "OK" },
+    ]);
+  };
+
+  // Alert with multiple buttons
+  const showMultiButtonAlert = () => {
+    Alert.alert("Confirm Action", "Are you sure you want to proceed?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => console.log("OK Pressed"),
+      },
+    ]);
+  };
+
+  // Alert with destructive action
+  const showDestructiveAlert = () => {
+    Alert.alert("Delete Item", "This action cannot be undone", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Delete",
+        onPress: () => console.log("Delete pressed"),
+        style: "destructive", // iOS only
+      },
+    ]);
+  };
+
+  // iOS only - Alert with text input
+  const showPromptAlert = () => {
+    Alert.prompt(
+      "Enter Name",
+      "Please enter your name",
+      (text) => console.log("Input:", text),
+      "plain-text",
+      "",
+      "default"
+    );
+  };
+
   return (
     <View
       style={{
@@ -17,31 +68,16 @@ export default function Index() {
         justifyContent: "center",
         alignItems: "center",
         padding: 20,
-        gap: 30, // Space between indicators
+        gap: 20,
       }}
     >
-      {/* Default small size */}
-      <ActivityIndicator />
+      <Button title="Show Basic Alert" onPress={showBasicAlert} />
 
-      {/* Large size with custom color */}
-      <ActivityIndicator size="large" color="#007AFF" />
+      <Button title="Show Multi-Button Alert" onPress={showMultiButtonAlert} />
 
-      {/* Custom size and color */}
-      <ActivityIndicator size={50} color="#34C759" />
+      <Button title="Show Destructive Alert" onPress={showDestructiveAlert} />
 
-      {/* Not animating (stopped) */}
-      <ActivityIndicator size="large" color="#FF3B30" animating={false} />
-
-      {/* Custom styling with background */}
-      <ActivityIndicator
-        size="large"
-        color="white"
-        style={{
-          backgroundColor: "#007AFF",
-          padding: 10,
-          borderRadius: 8,
-        }}
-      />
+      <Button title="Show Prompt (iOS only)" onPress={showPromptAlert} />
     </View>
   );
 }
