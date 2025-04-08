@@ -53,5 +53,12 @@ const styles = StyleSheet.create({
   box: {
     width: 100,
     height: 100,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    marginVertical: 20,
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 10,
+    borderStyle: "dashed",
   },
 });
