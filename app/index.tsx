@@ -1,4 +1,4 @@
-import { View, Alert, Button, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
 /**
  * StyleSheet API Benefits:
@@ -24,7 +24,16 @@ import { View, Alert, Button, StyleSheet } from "react-native";
  *    - Enables future optimization possibilities
  */
 export default function Index() {
-  return <View style={styles.container}>test</View>;
+  return (
+    <View style={styles.container}>
+      <View style={[styles.lightblue, styles.box]}>
+        <Text>Hello</Text>
+      </View>
+      <View style={styles.lightgreen}>
+        <Text>Hello</Text>
+      </View>
+    </View>
+  );
 }
 
 // StyleSheet API implementation
@@ -34,5 +43,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
+  },
+  lightblue: {
+    backgroundColor: "lightblue",
+  },
+  lightgreen: {
+    backgroundColor: "lightgreen",
+  },
+  box: {
+    width: 100,
+    height: 100,
   },
 });
