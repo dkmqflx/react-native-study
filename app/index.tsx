@@ -1,25 +1,24 @@
-import { Text, View } from "react-native";
+import { Image, ImageBackground, Text, View } from "react-native";
+const logo = require("../assets/images/react-logo.png");
 
 /**
- * View is a fundamental component in React Native:
- * - It's the equivalent of a <div> in web development
- * - Acts as a container for other components
- * - Used for creating layouts and structuring content
- * - Supports flexbox layout system
- * - Can be nested inside other Views
- * - Handles touch events and can be styled
- */
-
-/**
- * Text is a fundamental component for displaying text:
- * - The only component that can contain strings
- * - Similar to <p>, <span>, <h1> etc. in web development
- * - Supports nesting (Text components inside Text)
- * - Has its own styling properties specific to text
- * - Handles text events like selection and press
- * - Automatically wraps content by default
- * - Supports various text styling properties like:
- *   fontSize, fontWeight, color, textAlign, etc.
+ * Image vs ImageBackground in React Native:
+ *
+ * Image Component:
+ * - Basic component for displaying images
+ * - Cannot contain child components
+ * - Simpler and more performant
+ * - Used when you just need to show an image
+ *
+ * ImageBackground Component:
+ * - Extends Image component functionality
+ * - Can contain child components (acts as a container)
+ * - Useful for:
+ *   - Text overlays on images
+ *   - Creating image-based backgrounds
+ *   - Complex layouts with images
+ * - Slightly less performant than Image
+ * - Internally combines Image with View
  */
 export default function Index() {
   return (
@@ -43,6 +42,31 @@ export default function Index() {
       >
         Edit app/index.tsx to edit this screen.
       </Text>
+      {/* Local image using require */}
+      <Image source={logo} style={{ width: 200, height: 300 }} />
+      {/* Remote image using uri */}
+      <Image
+        source={{
+          uri: "https://picsum.photos/200/300",
+        }}
+        style={{ width: 200, height: 300 }}
+      />
+      <ImageBackground
+        source={logo}
+        style={{ width: 200, height: 300 }}
+        resizeMode="cover"
+      >
+        <Text
+          style={{
+            color: "white",
+            textAlign: "center",
+            padding: 10,
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          Hello
+        </Text>
+      </ImageBackground>
     </View>
   );
 }
