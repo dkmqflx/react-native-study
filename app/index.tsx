@@ -1,36 +1,55 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Platform } from "react-native";
 
 /**
- * StyleSheet API Benefits:
+ * Box Shadow in React Native:
  *
- * 1. Performance:
- *    - Styles are created once and reused
- *    - ID-based instead of recreating style objects
- *    - Reduces memory usage and garbage collection
+ * iOS (shadowXXX):
+ * - shadowColor: Color of the shadow
+ * - shadowOffset: { width: number, height: number }
+ * - shadowOpacity: 0 to 1
+ * - shadowRadius: Blur radius
  *
- * 2. Validation:
- *    - Catches errors early
- *    - Validates property names and values
- *    - TypeScript support for style properties
+ * Android (elevation):
+ * - elevation: number (1-24)
+ * - Only supports gray shadows
+ * - Automatically handles shadow based on Material Design
  *
- * 3. Organization:
- *    - Separates styles from component logic
- *    - Better code readability
- *    - Easier style reuse
+ * iOS-specific shadow:
+ * Uses shadowColor, shadowOffset, shadowOpacity, shadowRadius
+ * Offers more control over shadow appearance
+ * Only works on iOS
  *
- * 4. Optimization:
- *    - React Native can optimize StyleSheet styles
- *    - Better than inline styles for complex apps
- *    - Enables future optimization possibilities
+ * Android-specific shadow:
+ * Uses elevation property
+ * Simple Material Design shadow
+ * Only works on Android
+ *
+ * Cross-platform shadow:
+ * Uses Platform.select to apply appropriate styles
+ * Works on both iOS and Android
+ * Best practice for consistent shadows
+ *
+ * Key differences:
+ * iOS allows full shadow customization
+ * Android only supports gray shadows with elevation
+ * Cross-platform approach ensures consistent appearance
  */
 export default function Index() {
   return (
     <View style={styles.container}>
-      <View style={[styles.lightblue, styles.box]}>
-        <Text>Hello</Text>
+      {/* iOS Shadow */}
+      <View style={styles.iosShadowBox}>
+        <Text>iOS Shadow</Text>
       </View>
-      <View style={styles.lightgreen}>
-        <Text>Hello</Text>
+
+      {/* Android Elevation */}
+      <View style={styles.androidShadowBox}>
+        <Text>Android Elevation</Text>
+      </View>
+
+      {/* Cross-platform Shadow */}
+      <View style={styles.crossPlatformBox}>
+        <Text>Cross-platform Shadow</Text>
       </View>
     </View>
   );
@@ -43,6 +62,47 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
+    gap: 30,
+  },
+  iosShadowBox: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 8,
+    // iOS shadow properties
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
+  androidShadowBox: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 8,
+    // Android shadow property
+    elevation: 5,
+  },
+  crossPlatformBox: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 8,
+    // Cross-platform shadow
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
   lightblue: {
     backgroundColor: "lightblue",
@@ -60,5 +120,12 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderRadius: 10,
     borderStyle: "dashed",
+  },
+  boxshadow: {
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 });
