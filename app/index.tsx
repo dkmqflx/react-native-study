@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import Box from "../components/box";
 
 /**
@@ -8,29 +8,82 @@ import Box from "../components/box";
  * - No need to specify display: 'flex'
  * - React Native only supports flex and none for the display property (no block, inline, etc.)
  */
+
+/**
+ * React Native Flex Alignment:
+ *
+ * alignItems: Aligns items along the cross-axis
+ * - 'stretch' (default): Items stretch to fill container's cross-axis
+ * - 'flex-start': Items align to start of cross-axis
+ * - 'flex-end': Items align to end of cross-axis
+ * - 'center': Items center on cross-axis
+ * - 'baseline': Items align by their baselines
+ */
 export default function App() {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {/* Items stack vertically by default (flexDirection: 'column') */}
-      <Box style={{ backgroundColor: "#8e9b00" }}>Box 1</Box>
-      <Box style={{ backgroundColor: "#b65d1f" }}>Box 2</Box>
+      <Box style={{ backgroundColor: "#8e9b00", flex: 1 }}>Box 1</Box>
+      <Box style={{ backgroundColor: "#b65d1f", flex: 3 }}>Box 2</Box>
       <Box style={{ backgroundColor: "#1c4c56" }}>Box 3</Box>
       <Box style={{ backgroundColor: "#ab9156" }}>Box 4</Box>
-      {/* <Box style={{ backgroundColor: "#6b0803" }}>Box 5</Box>
-      <Box style={{ backgroundColor: "#1c4c56" }}>Box 6</Box>
-      <Box style={{ backgroundColor: "#b95f21" }}>Box 7</Box> */}
-    </View>
+
+      {/* Flex Start */}
+      <View style={[styles.row, { alignItems: "flex-start" }]}>
+        <Box style={[styles.box, { height: 40 }]}>flex-start</Box>
+        <Box style={[styles.box, { height: 60 }]}>flex-start</Box>
+        <Box style={[styles.box, { height: 80 }]}>flex-start</Box>
+      </View>
+
+      {/* Flex End */}
+      <View style={[styles.row, { alignItems: "flex-end" }]}>
+        <Box style={[styles.box, { height: 40 }]}>flex-end</Box>
+        <Box style={[styles.box, { height: 60 }]}>flex-end</Box>
+        <Box style={[styles.box, { height: 80 }]}>flex-end</Box>
+      </View>
+
+      {/* Center */}
+      <View style={[styles.row, { alignItems: "center" }]}>
+        <Box style={[styles.box, { height: 40 }]}>center</Box>
+        <Box style={[styles.box, { height: 60 }]}>center</Box>
+        <Box style={[styles.box, { height: 80 }]}>center</Box>
+      </View>
+
+      {/* Stretch */}
+      <View style={[styles.row, { alignItems: "stretch" }]}>
+        <Box style={styles.box}>stretch</Box>
+        <Box style={styles.box}>stretch</Box>
+        <Box style={styles.box}>stretch</Box>
+      </View>
+
+      {/* Baseline */}
+      <View style={[styles.row, { alignItems: "baseline" }]}>
+        <Box style={[styles.box, { height: 40, paddingTop: 10 }]}>baseline</Box>
+        <Box style={[styles.box, { height: 60, paddingTop: 20 }]}>baseline</Box>
+        <Box style={[styles.box, { height: 80, paddingTop: 30 }]}>baseline</Box>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    // View is already a flex container by default
     flex: 1,
-    // flexDirection: 'column' is the default
+    padding: 20,
+  },
+  row: {
     flexDirection: "row",
-    marginTop: 64,
-    borderWidth: 6,
-    borderColor: "red",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    height: 100, // Fixed height to demonstrate alignment
+    marginVertical: 10, // Add vertical margin between rows
+  },
+  box: {
+    backgroundColor: "#007AFF",
+    padding: 10,
+    margin: 5,
+    borderRadius: 4,
+    width: 100,
   },
 });
