@@ -1,62 +1,47 @@
-import { View, StatusBar, SafeAreaView } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 
 /**
- * StatusBar Component in React Native:
+ * ActivityIndicator Component in React Native:
  *
  * Key Props:
- * - backgroundColor: Sets background color (Android only)
- * - barStyle: Sets text/icons color
- *   - 'default': Dark content, for light backgrounds
- *   - 'light-content': Light content, for dark backgrounds
- *   - 'dark-content': Dark content, for light backgrounds
- * - hidden: Show/hide the status bar
- * - translucent: Makes status bar background transparent (Android only)
- * - animated: Animate style changes
- * - networkActivityIndicatorVisible: Show network activity (iOS only)
+ * - size: 'small' | 'large' | number
+ * - color: Color of the spinner
+ * - animating: Boolean to show/hide the indicator
+ * - hidesWhenStopped: iOS only, hides when not animating
  */
 export default function Index() {
   return (
-    // SafeAreaView ensures content is not hidden behind status bar
-    <SafeAreaView style={{ flex: 1 }}>
-      {/* Example 1: Basic dark status bar for light backgrounds */}
-      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 20,
+        gap: 30, // Space between indicators
+      }}
+    >
+      {/* Default small size */}
+      <ActivityIndicator />
 
-      {/* Example 2: Light status bar for dark backgrounds
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor="#000000"
-      /> */}
+      {/* Large size with custom color */}
+      <ActivityIndicator size="large" color="#007AFF" />
 
-      {/* <StatusBar barStyle="light-content" backgroundColor="#000000" /> */}
+      {/* Custom size and color */}
+      <ActivityIndicator size={50} color="#34C759" />
 
-      {/* Example 3: Translucent status bar (Android)
-      <StatusBar
-        translucent={true}
-        backgroundColor="transparent"
-        barStyle="light-content"
-      /> */}
+      {/* Not animating (stopped) */}
+      <ActivityIndicator size="large" color="#FF3B30" animating={false} />
 
-      {/* Example 4: Hidden status bar
-      <StatusBar
-        hidden={true}
-      /> */}
-
-      {/* Example 5: Animated status bar changes
-      <StatusBar
-        animated={true}
-        barStyle="dark-content"
-        backgroundColor="#ffffff"
-      /> */}
-
-      {/* Main container */}
-      <View
+      {/* Custom styling with background */}
+      <ActivityIndicator
+        size="large"
+        color="white"
         style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          padding: 20,
+          backgroundColor: "#007AFF",
+          padding: 10,
+          borderRadius: 8,
         }}
-      ></View>
-    </SafeAreaView>
+      />
+    </View>
   );
 }
