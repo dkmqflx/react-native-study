@@ -1,63 +1,70 @@
+import Box from "@/components/box";
 import { StyleSheet, View, ScrollView, Text } from "react-native";
 
 /**
- * flexBasis vs height with flex:1 in React Native:
+ * flexShrink in React Native:
  *
- * flexBasis: Sets the initial main size of a flex item
- * - Works with flex:1 to determine final size
- * - Can be overridden by flex-grow and flex-shrink
- *
- * height: Sets a fixed size
- * - With flex:1, height becomes the minimum size
- * - Item can grow beyond height if flex:1
+ * flexShrink determines how much an item will shrink relative to other items when there isn't enough space:
+ * - Default value is 1
+ * - Higher values make items shrink more
+ * - 0 prevents shrinking
+ * - Useful when you want to control which items should shrink first
  */
 export default function App() {
   return (
     <ScrollView style={styles.container}>
-      {/* Basic flexBasis Examples */}
+      {/* Basic flexShrink Example */}
       <View style={styles.section}>
-        <Text style={styles.title}>Basic flexBasis Examples</Text>
-        <View style={styles.demoContainer}>
-          <View style={[styles.box, { flexBasis: 50 }]}>
-            <Text style={styles.text}>flexBasis: 50</Text>
-          </View>
-          <View style={[styles.box, { flexBasis: 100 }]}>
-            <Text style={styles.text}>flexBasis: 100</Text>
-          </View>
-          <View style={[styles.box, { flexBasis: 150 }]}>
-            <Text style={styles.text}>flexBasis: 150</Text>
-          </View>
+        <Text style={styles.title}>Basic flexShrink Example</Text>
+        <View style={styles.row}>
+          <Box style={[styles.box, { flexShrink: 1, width: 200 }]}>
+            flexShrink: 1{"\n"}width: 200
+          </Box>
+          <Box style={[styles.box, { flexShrink: 2, width: 200 }]}>
+            flexShrink: 2{"\n"}width: 200
+          </Box>
         </View>
       </View>
 
-      {/* flexBasis with flex:1 */}
+      {/* No Shrink vs Shrink */}
       <View style={styles.section}>
-        <Text style={styles.title}>flexBasis with flex:1</Text>
-        <View style={styles.demoContainer}>
-          <View style={[styles.box, { flex: 1, flexBasis: 50 }]}>
-            <Text style={styles.text}>flex:1{"\n"}flexBasis: 50</Text>
-          </View>
-          <View style={[styles.box, { flex: 1, flexBasis: 100 }]}>
-            <Text style={styles.text}>flex:1{"\n"}flexBasis: 100</Text>
-          </View>
-          <View style={[styles.box, { flex: 1, flexBasis: 150 }]}>
-            <Text style={styles.text}>flex:1{"\n"}flexBasis: 150</Text>
-          </View>
+        <Text style={styles.title}>No Shrink vs Shrink</Text>
+        <View style={styles.row}>
+          <Box style={[styles.box, { flexShrink: 0, width: 200 }]}>
+            flexShrink: 0{"\n"}(won't shrink)
+          </Box>
+          <Box style={[styles.box, { flexShrink: 1, width: 200 }]}>
+            flexShrink: 1{"\n"}(will shrink)
+          </Box>
         </View>
       </View>
 
-      {/* Comparison: flexBasis vs height with flex:1 */}
+      {/* Multiple Items with Different Shrink Values */}
       <View style={styles.section}>
-        <Text style={styles.title}>
-          Comparison: flexBasis vs height with flex:1
-        </Text>
-        <View style={styles.comparisonContainer}>
-          <View style={[styles.column, { flex: 1, flexBasis: 100 }]}>
-            <Text style={styles.text}>flex:1{"\n"}flexBasis: 100</Text>
-          </View>
-          <View style={[styles.column, { flex: 1, height: 100 }]}>
-            <Text style={styles.text}>flex:1{"\n"}height: 100</Text>
-          </View>
+        <Text style={styles.title}>Different Shrink Values</Text>
+        <View style={styles.row}>
+          <Box style={[styles.box, { flexShrink: 1, width: 150 }]}>
+            flexShrink: 1
+          </Box>
+          <Box style={[styles.box, { flexShrink: 2, width: 150 }]}>
+            flexShrink: 2
+          </Box>
+          <Box style={[styles.box, { flexShrink: 3, width: 150 }]}>
+            flexShrink: 3
+          </Box>
+        </View>
+      </View>
+
+      {/* Combining with flexGrow */}
+      <View style={styles.section}>
+        <Text style={styles.title}>With flexGrow</Text>
+        <View style={styles.row}>
+          <Box style={[styles.box, { flexShrink: 1, flexGrow: 1, width: 100 }]}>
+            flexShrink: 1{"\n"}flexGrow: 1
+          </Box>
+          <Box style={[styles.box, { flexShrink: 0, width: 200 }]}>
+            flexShrink: 0{"\n"}(fixed width)
+          </Box>
         </View>
       </View>
     </ScrollView>
@@ -70,44 +77,23 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   section: {
-    marginBottom: 30,
+    marginBottom: 20,
   },
   title: {
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 10,
   },
-  text: {
-    color: "white",
-    fontSize: 12,
-    textAlign: "center",
-  },
-  demoContainer: {
-    height: 400,
-    backgroundColor: "#f0f0f0",
+  row: {
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: "#ccc",
     padding: 10,
+    backgroundColor: "#f0f0f0",
     borderRadius: 4,
   },
   box: {
-    backgroundColor: "#007AFF",
     margin: 5,
     padding: 10,
-    borderRadius: 4,
-    justifyContent: "center",
-  },
-  comparisonContainer: {
-    height: 300,
-    flexDirection: "row",
-    backgroundColor: "#f0f0f0",
-    padding: 10,
-    borderRadius: 4,
-  },
-  column: {
-    backgroundColor: "#007AFF",
-    margin: 5,
-    padding: 10,
-    borderRadius: 4,
-    justifyContent: "center",
-    minWidth: 100,
   },
 });
