@@ -1,91 +1,63 @@
 import { StyleSheet, View, ScrollView, Text } from "react-native";
-import Box from "../components/box";
 
 /**
-
-/**
- * alignContent in React Native:
+ * flexBasis vs height with flex:1 in React Native:
  *
- * alignContent is used to align the vertical items in the container:
- * - 'flex-start': Items packed at start
- * - 'flex-end': Items packed at end
- * - 'center': Items centered in container
- * - 'stretch': Items stretch to fill space
- * - 'space-between': Equal space between items
- * - 'space-around': Equal space around items
+ * flexBasis: Sets the initial main size of a flex item
+ * - Works with flex:1 to determine final size
+ * - Can be overridden by flex-grow and flex-shrink
+ *
+ * height: Sets a fixed size
+ * - With flex:1, height becomes the minimum size
+ * - Item can grow beyond height if flex:1
  */
 export default function App() {
   return (
     <ScrollView style={styles.container}>
-      {/* Flex Start */}
+      {/* Basic flexBasis Examples */}
       <View style={styles.section}>
-        <Text style={styles.title}>alignContent: 'flex-start'</Text>
-        <View style={[styles.wrapper, { alignContent: "flex-start" }]}>
-          {[1, 2, 3, 4, 5, 6].map((num) => (
-            <Box key={num} style={styles.box}>
-              Box {num}
-            </Box>
-          ))}
+        <Text style={styles.title}>Basic flexBasis Examples</Text>
+        <View style={styles.demoContainer}>
+          <View style={[styles.box, { flexBasis: 50 }]}>
+            <Text style={styles.text}>flexBasis: 50</Text>
+          </View>
+          <View style={[styles.box, { flexBasis: 100 }]}>
+            <Text style={styles.text}>flexBasis: 100</Text>
+          </View>
+          <View style={[styles.box, { flexBasis: 150 }]}>
+            <Text style={styles.text}>flexBasis: 150</Text>
+          </View>
         </View>
       </View>
 
-      {/* Flex End */}
+      {/* flexBasis with flex:1 */}
       <View style={styles.section}>
-        <Text style={styles.title}>alignContent: 'flex-end'</Text>
-        <View style={[styles.wrapper, { alignContent: "flex-end" }]}>
-          {[1, 2, 3, 4, 5, 6].map((num) => (
-            <Box key={num} style={styles.box}>
-              Box {num}
-            </Box>
-          ))}
+        <Text style={styles.title}>flexBasis with flex:1</Text>
+        <View style={styles.demoContainer}>
+          <View style={[styles.box, { flex: 1, flexBasis: 50 }]}>
+            <Text style={styles.text}>flex:1{"\n"}flexBasis: 50</Text>
+          </View>
+          <View style={[styles.box, { flex: 1, flexBasis: 100 }]}>
+            <Text style={styles.text}>flex:1{"\n"}flexBasis: 100</Text>
+          </View>
+          <View style={[styles.box, { flex: 1, flexBasis: 150 }]}>
+            <Text style={styles.text}>flex:1{"\n"}flexBasis: 150</Text>
+          </View>
         </View>
       </View>
 
-      {/* Center */}
+      {/* Comparison: flexBasis vs height with flex:1 */}
       <View style={styles.section}>
-        <Text style={styles.title}>alignContent: 'center'</Text>
-        <View style={[styles.wrapper, { alignContent: "center" }]}>
-          {[1, 2, 3, 4, 5, 6].map((num) => (
-            <Box key={num} style={styles.box}>
-              Box {num}
-            </Box>
-          ))}
-        </View>
-      </View>
-
-      {/* Space Between */}
-      <View style={styles.section}>
-        <Text style={styles.title}>alignContent: 'space-between'</Text>
-        <View style={[styles.wrapper, { alignContent: "space-between" }]}>
-          {[1, 2, 3, 4, 5, 6].map((num) => (
-            <Box key={num} style={styles.box}>
-              Box {num}
-            </Box>
-          ))}
-        </View>
-      </View>
-
-      {/* Space Around */}
-      <View style={styles.section}>
-        <Text style={styles.title}>alignContent: 'space-around'</Text>
-        <View style={[styles.wrapper, { alignContent: "space-around" }]}>
-          {[1, 2, 3, 4, 5, 6].map((num) => (
-            <Box key={num} style={styles.box}>
-              Box {num}
-            </Box>
-          ))}
-        </View>
-      </View>
-
-      {/* Stretch */}
-      <View style={styles.section}>
-        <Text style={styles.title}>alignContent: 'stretch'</Text>
-        <View style={[styles.wrapper, { alignContent: "stretch" }]}>
-          {[1, 2, 3, 4, 5, 6].map((num) => (
-            <Box key={num} style={[styles.box, { height: undefined }]}>
-              Box {num}
-            </Box>
-          ))}
+        <Text style={styles.title}>
+          Comparison: flexBasis vs height with flex:1
+        </Text>
+        <View style={styles.comparisonContainer}>
+          <View style={[styles.column, { flex: 1, flexBasis: 100 }]}>
+            <Text style={styles.text}>flex:1{"\n"}flexBasis: 100</Text>
+          </View>
+          <View style={[styles.column, { flex: 1, height: 100 }]}>
+            <Text style={styles.text}>flex:1{"\n"}height: 100</Text>
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -94,38 +66,48 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 20,
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 30,
   },
   title: {
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 10,
   },
-
+  text: {
+    color: "white",
+    fontSize: 12,
+    textAlign: "center",
+  },
+  demoContainer: {
+    height: 400,
+    backgroundColor: "#f0f0f0",
+    padding: 10,
+    borderRadius: 4,
+  },
   box: {
     backgroundColor: "#007AFF",
-    padding: 10,
     margin: 5,
-    borderRadius: 4,
-    width: 100,
-    height: 50,
-  },
-  wrapBox: {
-    backgroundColor: "#007AFF",
     padding: 10,
-    margin: 5,
     borderRadius: 4,
-    width: 100,
-    height: 60,
+    justifyContent: "center",
   },
-  wrapper: {
-    flexWrap: "wrap",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    height: 200,
+  comparisonContainer: {
+    height: 300,
+    flexDirection: "row",
     backgroundColor: "#f0f0f0",
+    padding: 10,
+    borderRadius: 4,
+  },
+  column: {
+    backgroundColor: "#007AFF",
+    margin: 5,
+    padding: 10,
+    borderRadius: 4,
+    justifyContent: "center",
+    minWidth: 100,
   },
 });
