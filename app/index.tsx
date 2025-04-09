@@ -2,61 +2,90 @@ import { StyleSheet, View, ScrollView, Text } from "react-native";
 import Box from "../components/box";
 
 /**
- * flexWrap in React Native:
+
+/**
+ * alignContent in React Native:
  *
- * Controls how items wrap when they run out of space:
- * - 'nowrap' (default): Items stay in single line, may overflow
- * - 'wrap': Items wrap to next line when needed
- * - 'wrap-reverse': Items wrap to previous line
+ * alignContent is used to align the vertical items in the container:
+ * - 'flex-start': Items packed at start
+ * - 'flex-end': Items packed at end
+ * - 'center': Items centered in container
+ * - 'stretch': Items stretch to fill space
+ * - 'space-between': Equal space between items
+ * - 'space-around': Equal space around items
  */
 export default function App() {
   return (
     <ScrollView style={styles.container}>
-      {/* No Wrap (default) */}
+      {/* Flex Start */}
       <View style={styles.section}>
-        <Text style={styles.title}>flexWrap: 'nowrap' (default)</Text>
-        <View style={[styles.row, { flexWrap: "nowrap" }]}>
-          {[1, 2, 3, 4, 5].map((num) => (
-            <Box key={num} style={styles.wrapBox}>
+        <Text style={styles.title}>alignContent: 'flex-start'</Text>
+        <View style={[styles.wrapper, { alignContent: "flex-start" }]}>
+          {[1, 2, 3, 4, 5, 6].map((num) => (
+            <Box key={num} style={styles.box}>
               Box {num}
             </Box>
           ))}
         </View>
       </View>
 
-      {/* Wrap */}
+      {/* Flex End */}
       <View style={styles.section}>
-        <Text style={styles.title}>flexWrap: 'wrap'</Text>
-        <View style={[styles.row, { flexWrap: "wrap" }]}>
-          {[1, 2, 3, 4, 5].map((num) => (
-            <Box key={num} style={styles.wrapBox}>
+        <Text style={styles.title}>alignContent: 'flex-end'</Text>
+        <View style={[styles.wrapper, { alignContent: "flex-end" }]}>
+          {[1, 2, 3, 4, 5, 6].map((num) => (
+            <Box key={num} style={styles.box}>
               Box {num}
             </Box>
           ))}
         </View>
       </View>
 
-      {/* Wrap Reverse */}
+      {/* Center */}
       <View style={styles.section}>
-        <Text style={styles.title}>flexWrap: 'wrap-reverse'</Text>
-        <View style={[styles.row, { flexWrap: "wrap-reverse" }]}>
-          {[1, 2, 3, 4, 5].map((num) => (
-            <Box key={num} style={styles.wrapBox}>
+        <Text style={styles.title}>alignContent: 'center'</Text>
+        <View style={[styles.wrapper, { alignContent: "center" }]}>
+          {[1, 2, 3, 4, 5, 6].map((num) => (
+            <Box key={num} style={styles.box}>
               Box {num}
             </Box>
           ))}
         </View>
       </View>
 
-      {/* Wrap with different box sizes */}
+      {/* Space Between */}
       <View style={styles.section}>
-        <Text style={styles.title}>Wrap with different sizes</Text>
-        <View style={[styles.row, { flexWrap: "wrap" }]}>
-          <Box style={[styles.wrapBox, { width: 150 }]}>Wide Box</Box>
-          <Box style={styles.wrapBox}>Normal</Box>
-          <Box style={[styles.wrapBox, { width: 200 }]}>Wider Box</Box>
-          <Box style={styles.wrapBox}>Normal</Box>
-          <Box style={styles.wrapBox}>Normal</Box>
+        <Text style={styles.title}>alignContent: 'space-between'</Text>
+        <View style={[styles.wrapper, { alignContent: "space-between" }]}>
+          {[1, 2, 3, 4, 5, 6].map((num) => (
+            <Box key={num} style={styles.box}>
+              Box {num}
+            </Box>
+          ))}
+        </View>
+      </View>
+
+      {/* Space Around */}
+      <View style={styles.section}>
+        <Text style={styles.title}>alignContent: 'space-around'</Text>
+        <View style={[styles.wrapper, { alignContent: "space-around" }]}>
+          {[1, 2, 3, 4, 5, 6].map((num) => (
+            <Box key={num} style={styles.box}>
+              Box {num}
+            </Box>
+          ))}
+        </View>
+      </View>
+
+      {/* Stretch */}
+      <View style={styles.section}>
+        <Text style={styles.title}>alignContent: 'stretch'</Text>
+        <View style={[styles.wrapper, { alignContent: "stretch" }]}>
+          {[1, 2, 3, 4, 5, 6].map((num) => (
+            <Box key={num} style={[styles.box, { height: undefined }]}>
+              Box {num}
+            </Box>
+          ))}
         </View>
       </View>
     </ScrollView>
@@ -65,7 +94,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 20,
   },
   section: {
@@ -76,22 +104,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
-  row: {
-    flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    height: 150, // Increased height to show alignment better
-    marginVertical: 10,
-    backgroundColor: "#f0f0f0", // Light background to see container
-  },
+
   box: {
     backgroundColor: "#007AFF",
     padding: 10,
     margin: 5,
     borderRadius: 4,
     width: 100,
-    height: 60,
+    height: 50,
   },
   wrapBox: {
     backgroundColor: "#007AFF",
@@ -100,5 +120,12 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     width: 100,
     height: 60,
+  },
+  wrapper: {
+    flexWrap: "wrap",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    height: 200,
+    backgroundColor: "#f0f0f0",
   },
 });
