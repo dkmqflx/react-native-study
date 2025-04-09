@@ -1,96 +1,70 @@
-import Box from "@/components/box";
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import { StyleSheet, View, Text, ScrollView, Dimensions } from "react-native";
 
 /**
- * flexGrow in React Native:
+ * Window vs Screen Dimensions in React Native:
  *
- * flexGrow determines how much an item will grow relative to other items:
- * - Default value is 0 (won't grow)
- * - Higher values make items grow more
- * - Similar to flex: n where n is the flexGrow value
- * - Distributes remaining space proportionally
+ * Window:
+ * - Represents the visible application window
+ * - Excludes status bar and other system UI elements
+ * - Changes when keyboard appears or orientation changes
+ * - Use for responsive layouts within app content
  *
- * flex is shorthand for flexGrow, flexShrink, and flexBasis
- * if flex: 1, then flexGrow: 1, flexShrink: 1, flexBasis: 0
+ * Screen:
+ * - Represents the entire physical screen
+ * - Includes status bar and all system UI elements
+ * - Remains constant regardless of keyboard or orientation
+ * - Use when you need full device screen dimensions
  */
+
+// Get both window and screen dimensions
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
+
 export default function App() {
   return (
     <ScrollView style={styles.container}>
-      {/* Basic flexGrow Example */}
+      {/* Window Dimensions */}
       <View style={styles.section}>
-        <Text style={styles.title}>Basic flexGrow Example</Text>
-        <View style={styles.row}>
-          <View style={[styles.box, { width: 50 }]}>
-            <Text style={styles.text}>width: 50{"\n"}no grow</Text>
-          </View>
-          <View style={[styles.box, { flexGrow: 1, width: 50 }]}>
-            <Text style={styles.text}>width: 50{"\n"}flexGrow: 1</Text>
+        <Text style={styles.title}>Window Dimensions</Text>
+        <View style={styles.demoContainer}>
+          <Text style={styles.text}>Static window.width: {window.width}px</Text>
+          <Text style={styles.text}>
+            Static window.height: {window.height}px
+          </Text>
+          <Text style={styles.subtitle}>Window = Visible App Area</Text>
+          <View style={[styles.box, { width: window.width * 0.8 }]}>
+            <Text style={styles.boxText}>80% of Window Width</Text>
           </View>
         </View>
       </View>
 
-      {/* Different flexGrow Values */}
+      {/* Screen Dimensions */}
       <View style={styles.section}>
-        <Text style={styles.title}>Different flexGrow Values</Text>
-        <View style={styles.row}>
-          <View style={[styles.box, { flexGrow: 1, width: 50 }]}>
-            <Text style={styles.text}>flexGrow: 1</Text>
-          </View>
-          <View style={[styles.box, { flexGrow: 2, width: 50 }]}>
-            <Text style={styles.text}>flexGrow: 2</Text>
-          </View>
-          <View style={[styles.box, { flexGrow: 3, width: 50 }]}>
-            <Text style={styles.text}>flexGrow: 3</Text>
+        <Text style={styles.title}>Screen Dimensions</Text>
+        <View style={styles.demoContainer}>
+          <Text style={styles.text}>screen.width: {screen.width}px</Text>
+          <Text style={styles.text}>screen.height: {screen.height}px</Text>
+          <Text style={styles.subtitle}>Screen = Full Physical Screen</Text>
+          <View style={[styles.box, { width: screen.width * 0.8 }]}>
+            <Text style={styles.boxText}>80% of Screen Width</Text>
           </View>
         </View>
       </View>
 
-      {/* flexGrow with Fixed Width Items */}
+      {/* Dimension Differences */}
       <View style={styles.section}>
-        <Text style={styles.title}>flexGrow with Fixed Width Items</Text>
-        <View style={styles.row}>
-          <View style={[styles.box, { width: 100 }]}>
-            <Text style={styles.text}>Fixed{"\n"}width: 100</Text>
-          </View>
-          <View style={[styles.box, { flexGrow: 1 }]}>
-            <Text style={styles.text}>flexGrow: 1{"\n"}(fills space)</Text>
-          </View>
-          <View style={[styles.box, { width: 100 }]}>
-            <Text style={styles.text}>Fixed{"\n"}width: 100</Text>
-          </View>
-        </View>
-      </View>
-
-      {/* Multiple Growing Items */}
-      <View style={styles.section}>
-        <Text style={styles.title}>Multiple Growing Items</Text>
-        <View style={styles.row}>
-          <View style={[styles.box, { flexGrow: 1, width: 50 }]}>
-            <Text style={styles.text}>flexGrow: 1</Text>
-          </View>
-          <View style={[styles.box, { width: 100 }]}>
-            <Text style={styles.text}>Fixed{"\n"}width: 100</Text>
-          </View>
-          <View style={[styles.box, { flexGrow: 1, width: 50 }]}>
-            <Text style={styles.text}>flexGrow: 1</Text>
-          </View>
-        </View>
-      </View>
-
-      {/* Combining flexGrow and flexShrink */}
-      <View style={styles.section}>
-        <Text style={styles.title}>flexGrow + flexShrink</Text>
-        <View style={styles.row}>
-          <View
-            style={[styles.box, { flexGrow: 1, flexShrink: 1, width: 100 }]}
-          >
-            <Text style={styles.text}>grow: 1{"\n"}shrink: 1</Text>
-          </View>
-          <View
-            style={[styles.box, { flexGrow: 1, flexShrink: 0, width: 100 }]}
-          >
-            <Text style={styles.text}>grow: 1{"\n"}shrink: 0</Text>
-          </View>
+        <Text style={styles.title}>Window vs Screen Differences</Text>
+        <View style={styles.demoContainer}>
+          <Text style={styles.text}>
+            Width Difference: {screen.width - window.width}px
+          </Text>
+          <Text style={styles.text}>
+            Height Difference: {screen.height - window.height}px
+          </Text>
+          <Text style={styles.note}>
+            The difference accounts for system UI elements like status bar,
+            navigation bar, etc.
+          </Text>
         </View>
       </View>
     </ScrollView>
@@ -106,28 +80,48 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
   },
-  text: {
-    color: "white",
-    fontSize: 12,
-    textAlign: "center",
+  subtitle: {
+    fontSize: 16,
+    fontWeight: "500",
+    marginTop: 15,
+    marginBottom: 5,
   },
-  row: {
-    flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "#ccc",
+  text: {
+    fontSize: 14,
+    marginBottom: 5,
+  },
+  note: {
+    fontSize: 12,
+    fontStyle: "italic",
+    marginTop: 10,
+    color: "#666",
+  },
+  demoContainer: {
     padding: 10,
     backgroundColor: "#f0f0f0",
     borderRadius: 4,
+    marginBottom: 10,
   },
   box: {
     backgroundColor: "#007AFF",
-    margin: 5,
-    padding: 10,
+    padding: 15,
     borderRadius: 4,
-    justifyContent: "center",
+    marginTop: 10,
+    alignItems: "center",
+  },
+  useCaseBox: {
+    backgroundColor: "#007AFF",
+    padding: 15,
+    borderRadius: 4,
+    marginVertical: 5,
+    alignItems: "center",
+  },
+  boxText: {
+    color: "white",
+    fontSize: 14,
   },
 });
