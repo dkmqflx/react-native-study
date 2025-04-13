@@ -1,73 +1,64 @@
 import { StyleSheet, View, Text, ScrollView, Dimensions } from "react-native";
+import { useState, useEffect } from "react";
 
 /**
- * Window vs Screen Dimensions in React Native:
  *
- * Window:
- * - Represents the visible application window
- * - Excludes status bar and other system UI elements
- * - Changes when keyboard appears or orientation changes
- * - Use for responsive layouts within app content
+ * Dimensions API
+ * Not Reactive:
+ * - Static values don't update on orientation changes
+ * - Doesn't update when split-screen mode changes
+ * - Doesn't update when keyboard shows/hides
+ * - Thus, when rotating the device, the dimensions will not be updated
  *
- * Screen:
- * - Represents the entire physical screen
- * - Includes status bar and all system UI elements
- * - Remains constant regardless of keyboard or orientation
- * - Use when you need full device screen dimensions
+ * Resolving Dimensions API Drawbacks:
+ *
+ * Main Issue: Dimensions.get() values are static and don't update on:
+ * - Screen rotation
+ * - Split-screen changes
+ * - Keyboard show/hide
+ *
+ * Solution:
+ * 1. Use state to store dimensions
+ * 2. Add event listener for 'change' event
+ * 3. Update state when dimensions change
+ * 4. Clean up listener on unmount
  */
 
-// Get both window and screen dimensions
-const window = Dimensions.get("window");
-const screen = Dimensions.get("screen");
-
 export default function App() {
+  // State to store current dimensions
+  const [dimensions, setDimensions] = useState({
+    window: Dimensions.get("window"),
+  });
+
+  // Event handler setup
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener("change", ({ window }) => {
+      setDimensions({ window });
+      console.log("Dimensions changed:", { window });
+    });
+
+    // Cleanup subscription on unmount
+    return () => subscription.remove();
+  }, []);
+
+  const { window } = dimensions;
+  const windowWidth = window.width;
+  const windowHeight = window.height;
+
   return (
-    <ScrollView style={styles.container}>
-      {/* Window Dimensions */}
-      <View style={styles.section}>
-        <Text style={styles.title}>Window Dimensions</Text>
-        <View style={styles.demoContainer}>
-          <Text style={styles.text}>Static window.width: {window.width}px</Text>
-          <Text style={styles.text}>
-            Static window.height: {window.height}px
-          </Text>
-          <Text style={styles.subtitle}>Window = Visible App Area</Text>
-          <View style={[styles.box, { width: window.width * 0.8 }]}>
-            <Text style={styles.boxText}>80% of Window Width</Text>
-          </View>
-        </View>
+    <View style={styles.container}>
+      <View
+        style={[
+          styles.box,
+          {
+            width: windowWidth > 500 ? "50%" : "90%",
+            height: windowHeight > 500 ? "60%" : "90%",
+          },
+        ]}
+      >
+        <Text style={{ fontSize: windowWidth > 500 ? 20 : 16 }}>Font!</Text>
       </View>
-
-      {/* Screen Dimensions */}
-      <View style={styles.section}>
-        <Text style={styles.title}>Screen Dimensions</Text>
-        <View style={styles.demoContainer}>
-          <Text style={styles.text}>screen.width: {screen.width}px</Text>
-          <Text style={styles.text}>screen.height: {screen.height}px</Text>
-          <Text style={styles.subtitle}>Screen = Full Physical Screen</Text>
-          <View style={[styles.box, { width: screen.width * 0.8 }]}>
-            <Text style={styles.boxText}>80% of Screen Width</Text>
-          </View>
-        </View>
-      </View>
-
-      {/* Dimension Differences */}
-      <View style={styles.section}>
-        <Text style={styles.title}>Window vs Screen Differences</Text>
-        <View style={styles.demoContainer}>
-          <Text style={styles.text}>
-            Width Difference: {screen.width - window.width}px
-          </Text>
-          <Text style={styles.text}>
-            Height Difference: {screen.height - window.height}px
-          </Text>
-          <Text style={styles.note}>
-            The difference accounts for system UI elements like status bar,
-            navigation bar, etc.
-          </Text>
-        </View>
-      </View>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -76,52 +67,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  section: {
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 16,
-    fontWeight: "500",
-    marginTop: 15,
-    marginBottom: 5,
-  },
-  text: {
-    fontSize: 14,
-    marginBottom: 5,
-  },
-  note: {
-    fontSize: 12,
-    fontStyle: "italic",
-    marginTop: 10,
-    color: "#666",
-  },
-  demoContainer: {
-    padding: 10,
-    backgroundColor: "#f0f0f0",
-    borderRadius: 4,
-    marginBottom: 10,
-  },
+
   box: {
     backgroundColor: "#007AFF",
-    padding: 15,
-    borderRadius: 4,
-    marginTop: 10,
     alignItems: "center",
-  },
-  useCaseBox: {
-    backgroundColor: "#007AFF",
-    padding: 15,
-    borderRadius: 4,
-    marginVertical: 5,
-    alignItems: "center",
-  },
-  boxText: {
-    color: "white",
-    fontSize: 14,
+    justifyContent: "center",
   },
 });
