@@ -1,4 +1,5 @@
 import { StyleSheet, View, Text, Platform, SafeAreaView } from "react-native";
+import CustomButton from "../components/CustomButton";
 
 /**
  *
@@ -8,19 +9,7 @@ import { StyleSheet, View, Text, Platform, SafeAreaView } from "react-native";
  * using the Platform module and
  * using platform-specific file extensions.
  *
- *
- * Platform Module in React Native:
- *
- * 1. Platform.OS:
- * - Returns 'ios' or 'android'
- * - Used for simple platform checks
- *
- * 2. Platform.select:
- * - Object-based platform-specific code
- * - Can specify different values for ios, android, and default
- * - More elegant than if/else statements
- *
- * Use cases:
+ * Platform Specific Code:
  * - Different styles per platform
  * - Platform-specific components
  * - Different behavior/logic per platform
@@ -32,13 +21,28 @@ export default function App() {
       {/* Platform.OS example */}
       <View style={styles.box}>
         <Text style={styles.title}>
-          Current Platform: {Platform.OS === "ios" ? "iOS" : "Android"}
+          현재 플랫폼: {Platform.OS === "ios" ? "iOS" : "Android"}
         </Text>
       </View>
 
       {/* Platform.select example */}
       <View style={styles.platformBox}>
-        <Text style={styles.text}>Platform-specific styles applied</Text>
+        <Text style={styles.text}>플랫폼별 다른 스타일이 적용됩니다</Text>
+      </View>
+
+      {/* Platform-specific file extension example */}
+      <View style={styles.box}>
+        <Text style={styles.title}>플랫폼별 다른 컴포넌트:</Text>
+        <Text style={styles.description}>
+          iOS: 보라색 텍스트, 둥근 모서리{"\n"}
+          Android: 파란색 텍스트, 각진 모서리
+        </Text>
+        <View style={styles.buttonContainer}>
+          <CustomButton
+            title="플랫폼별 버튼"
+            onPress={() => alert("버튼이 눌렸습니다!")}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -56,10 +60,20 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: "#f0f0f0",
     borderRadius: 10,
+    width: "100%",
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
+    marginBottom: 8,
+  },
+  description: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 16,
+  },
+  buttonContainer: {
+    alignItems: "center",
   },
   platformBox: {
     padding: Platform.select({
@@ -67,13 +81,15 @@ const styles = StyleSheet.create({
       android: 16,
     }),
     backgroundColor: Platform.select({
-      ios: "yellow", // iOS blue color
-      android: "red", // Android blue color
+      ios: "#007AFF", // iOS 파란색
+      android: "#2196F3", // Android 파란색
     }),
     borderRadius: Platform.select({
       ios: 10,
       android: 4,
     }),
+    marginBottom: 20,
+    width: "100%",
   },
   text: {
     color: "white",
