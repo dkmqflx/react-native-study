@@ -1,30 +1,48 @@
 import {
   StyleSheet,
   View,
-  ScrollView,
   Text,
   StatusBar,
+  FlatList,
   SafeAreaView,
 } from "react-native";
 import pokemonList from "../data.json";
 
 export default function App() {
-  /**
-   * SafeAreaView is for iOS status bar (For example, iPhone X notch)
-   * scrollView is for horizontal scrolling
-   */
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        {pokemonList.map((pokemon) => {
-          return (
-            <View style={styles.card} key={pokemon.id}>
-              <Text style={styles.cardText}>{pokemon.type}</Text>
-              <Text style={styles.cardText}>{pokemon.name}</Text>
-            </View>
-          );
-        })}
-      </ScrollView>
+      <View style={styles.scrollView}>
+        <FlatList
+          data={pokemonList}
+          renderItem={({ item }) => {
+            /**
+             * Using FlatList is more efficient than using ScrollView
+             * because it is optimized for rendering a list of items
+             * only the item that is in the view is rendered
+             * but, when you check the console, you will see that the item.id are rendered
+             * It is because that in advance to ensure smooth scrolling, more item.id are rendered
+             *
+             * keyExtractor is for the key of the item
+             * ItemSeparatorComponent is for the separator of the item
+             */
+
+            // If you check the console, you will see that the item.id that is only rendered in view
+            console.log(item.id);
+
+            return (
+              <View style={styles.card}>
+                <Text style={styles.cardText}>{item.type}</Text>
+                <Text style={styles.cardText}>{item.name}</Text>
+              </View>
+            );
+          }}
+          // keyExtractor is for the unique key of the item
+          // key should be string
+          keyExtractor={(item) => item.id.toString()}
+
+          // horizontal={true} // for horizontal scrolling
+        />
+      </View>
     </SafeAreaView>
   );
 }
