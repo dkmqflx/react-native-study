@@ -5,55 +5,52 @@ import {
   StatusBar,
   FlatList,
   SafeAreaView,
+  SectionList,
 } from "react-native";
 import pokemonList from "../data.json";
+import groupedPokemonList from "../grouped-data.json";
 
 export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.scrollView}>
-        <FlatList
-          data={pokemonList}
-          ListEmptyComponent={<Text>No Items Found</Text>}
-          ListHeaderComponent={
-            <Text style={styles.headerText}>Pokemon List</Text>
-          }
-          ListFooterComponent={
-            <Text style={styles.footerText}>End of list</Text>
-          }
+        {/*
+          SectionList is a performant component for rendering lists with section headers.
+          It is ideal for grouped data, such as lists divided by category or type.
+          Here, we use SectionList to display Pokémon grouped by their type.
+
+          Key props used:
+          - sections: Array of section objects, each with a 'type' (header) and 'data' (items)
+          - renderItem: Function to render each item in a section
+          - renderSectionHeader: Function to render the header for each section
+          - ItemSeparatorComponent: Renders a separator between items
+          - SectionSeparatorComponent: Renders a separator between sections
+        */}
+        <SectionList
+          // The 'sections' prop expects an array of objects with 'type' and 'data' fields.
+          sections={groupedPokemonList}
+          // Renders each item in the section. 'item' is a Pokémon name string.
           renderItem={({ item }) => {
-            /**
-             * Using FlatList is more efficient than using ScrollView
-             * because it is optimized for rendering a list of items
-             * only the item that is in the view is rendered
-             * but, when you check the console, you will see that the item.id are rendered
-             * It is because that in advance to ensure smooth scrolling, more item.id are rendered
-             *
-             * keyExtractor is for the key of the item
-             * ItemSeparatorComponent is for the separator of the item
-             */
-
-            // If you check the console, you will see that the item.id that is only rendered in view
-            console.log(item.id);
-
             return (
               <View style={styles.card}>
-                <Text style={styles.cardText}>{item.type}</Text>
-                <Text style={styles.cardText}>{item.name}</Text>
+                <Text style={styles.cardText}>{item}</Text>
               </View>
             );
           }}
-          // keyExtractor is for the unique key of the item
-          // key should be string
-          keyExtractor={(item) => item.id.toString()}
-          // horizontal={true} // for horizontal scrolling
-
-          /**
-           * ItemSeparatorComponent is for the separator of the item
-           * Comparing with marginBottom:16, at the bottom of the card, you can see that the separator is not rendered
-           * Thus, extra space is eliminated
-           */
+          // Renders the header for each section. 'section.type' is the Pokémon type.
+          renderSectionHeader={({ section }) => (
+            <Text style={styles.sectionHeaderText}>{section.type}</Text>
+          )}
+          // Adds space between items in a section.
           ItemSeparatorComponent={() => (
+            <View
+              style={{
+                height: 16,
+              }}
+            />
+          )}
+          // Adds space between different sections.
+          SectionSeparatorComponent={() => (
             <View
               style={{
                 height: 16,
@@ -70,7 +67,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F5F5F5",
-    // Add padding at the top equal to the status bar height (Android only)
     paddingTop: StatusBar.currentHeight,
   },
   scrollView: {
@@ -95,5 +91,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: "center",
     marginTop: 12,
+  },
+  sectionHeaderText: {
+    backgroundColor: "#FFFFFF",
+    fontSize: 24,
+    fontWeight: "bold",
   },
 });
