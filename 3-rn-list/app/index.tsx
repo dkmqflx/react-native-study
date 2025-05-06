@@ -13,7 +13,8 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <View style={styles.scrollView}>
         <FlatList
-          data={pokemonList}
+          data={[]}
+          ListEmptyComponent={<Text>No Items Found</Text>}
           renderItem={({ item }) => {
             /**
              * Using FlatList is more efficient than using ScrollView
