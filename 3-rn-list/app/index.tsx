@@ -39,8 +39,20 @@ export default function App() {
           // keyExtractor is for the unique key of the item
           // key should be string
           keyExtractor={(item) => item.id.toString()}
-
           // horizontal={true} // for horizontal scrolling
+
+          /**
+           * ItemSeparatorComponent is for the separator of the item
+           * Comparing with marginBottom:16, at the bottom of the card, you can see that the separator is not rendered
+           * Thus, extra space is eliminated
+           */
+          ItemSeparatorComponent={() => (
+            <View
+              style={{
+                height: 16,
+              }}
+            />
+          )}
         />
       </View>
     </SafeAreaView>
@@ -61,7 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     padding: 16,
     borderRadius: 8,
-    marginBottom: 16,
+    // marginBottom: 16,
     borderWidth: 1,
   },
   cardText: {
