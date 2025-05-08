@@ -6,6 +6,7 @@ import {
   StatusBar,
   TextInput,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import { useEffect, useState } from "react";
 export default function App() {
@@ -32,6 +33,15 @@ export default function App() {
       setError("Failed to fetch post list.");
     }
   };
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text>Loading...</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -91,5 +101,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: "center",
     marginTop: 12,
+  },
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: "#F5F5F5",
+    paddingTop: StatusBar.currentHeight,
+    justifyContent: "center", // Center the loading spinner
+    alignItems: "center", // Center the loading spinner
   },
 });
