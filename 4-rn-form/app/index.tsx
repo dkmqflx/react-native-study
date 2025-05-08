@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, Button } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Button,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 
 export default function App() {
   const [username, setUsername] = useState("");
@@ -10,9 +19,32 @@ export default function App() {
     console.log("Password:", password);
   };
 
+  /**
+   * KeyboardAvoidingView ensures that the keyboard does not cover input fields when typing.
+   * - behavior="padding": Moves the entire view up by the height of the keyboard when it appears.
+   * - keyboardVerticalOffset: Adds extra offset to the view when the keyboard is open.
+   *   This is set to 100 for iOS (to account for status bar, header, etc.) and 0 for Android.
+   *   On iOS, you may need a larger value (e.g., 100 or more) if you have a navigation bar, StatusBar, or other top elements.
+   * - Platform.OS is used to apply platform-specific logic, as keyboard handling differs between iOS and Android.
+   *
+   * If you use View instead of KeyboardAvoidingView, the keyboard may overlap and hide input fields,
+   * making it difficult for users to see what they are typing, especially on smaller screens.
+   *
+   *
+   *
+   */
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === "ios" ? 200 : 0}
+      style={styles.container}
+    >
       <View style={styles.form}>
+        <Image
+          source={require("../assets/adaptive-icon.png")}
+          style={styles.image}
+        />
+
         <Text style={styles.label}>Username</Text>
 
         <TextInput
@@ -33,7 +65,7 @@ export default function App() {
 
         <Button title="Login" onPress={handleSubmit} />
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -42,7 +74,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: 20,
-    backgroundColor: "lightblue",
+    backgroundColor: "#f5f5f5",
   },
   form: {
     backgroundColor: "#ffffff",
@@ -55,7 +87,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5, // for Android
+    elevation: 5,
   },
   label: {
     fontSize: 16,
@@ -69,5 +101,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 10,
     borderRadius: 5,
+  },
+
+  image: {
+    width: 200,
+    height: 400,
+    alignSelf: "center",
+    marginBottom: 50,
   },
 });
