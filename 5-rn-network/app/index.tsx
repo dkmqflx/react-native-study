@@ -7,13 +7,18 @@ import {
   TextInput,
   FlatList,
   ActivityIndicator,
+  Button,
 } from "react-native";
 import { useEffect, useState } from "react";
+
 export default function App() {
   const [postList, setPostList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [refreshing, setRefreshing] = useState(false);
+  const [isPosting, setIsPosting] = useState(false);
+  const [postTitle, setPostTitle] = useState("");
+  const [postBody, setPostBody] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -35,6 +40,34 @@ export default function App() {
     }
   };
 
+  const addPost = async () => {
+    setIsPosting(true);
+    try {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/posts",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: postTitle,
+            body: postBody,
+          }),
+        }
+      );
+      const newPost = await response.json();
+      setPostList([newPost, ...postList]);
+      setPostTitle("");
+      setPostBody("");
+      setError("");
+    } catch (error) {
+      console.error("Error adding new post:", error);
+      setError("Failed to add new post.");
+    }
+    setIsPosting(false);
+  };
+
   const handleRefresh = () => {
     setRefreshing(true);
     fetchData(20);
@@ -52,6 +85,26 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Post Title"
+          value={postTitle}
+          onChangeText={setPostTitle}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Post Body"
+          value={postBody}
+          onChangeText={setPostBody}
+        />
+        <Button
+          title={isPosting ? "Adding..." : "Add Post"}
+          onPress={addPost}
+          disabled={isPosting}
+        />
+      </View>
+
       <View style={styles.listContainer}>
         <FlatList
           data={postList}
@@ -119,5 +172,20 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight,
     justifyContent: "center", // Center the loading spinner
     alignItems: "center", // Center the loading spinner
+  },
+  inputContainer: {
+    backgroundColor: "#FFFFFF",
+    padding: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    margin: 16,
+  },
+  input: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    marginBottom: 8,
+    padding: 8,
+    borderRadius: 8,
   },
 });
