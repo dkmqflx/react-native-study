@@ -6,34 +6,13 @@ import {
   StyleSheet,
   StatusBar,
   TextInput,
+  Switch,
 } from "react-native";
 
 export default function App() {
   const [username, setUsername] = useState("");
 
-  /**
-   * TextInput component for entering the user's name.
-   * - Controlled by the username state.
-   * - Updates the username as the user types.
-   *
-   * Props:
-   * - placeholder: Shows a hint to the user.
-   * - value: Binds the input to the username state.
-   * - onChangeText: Updates the username state on input change.
-   * - secureTextEntry: If true, masks the input (useful for passwords). Here, set to false.
-   *     Example: <TextInput secureTextEntry={true} /> // for password fields
-   *
-   * - keyboardType: Sets the keyboard type. 'default' for general text input.
-   *     Example: <TextInput keyboardType="email-address" /> // for email input
-   *     Example: <TextInput keyboardType="numeric" /> // for numbers only
-   *
-   * - autoCapitalize: Controls capitalization. 'none' disables auto-capitalization.
-   *     Example: <TextInput autoCapitalize="words" /> // capitalizes each word
-   *     Example: <TextInput autoCapitalize="sentences" /> // capitalizes first letter of each sentence
-   *
-   * - autoCorrect: Enables/disables auto-correction. Set to false for names.
-   *     Example: <TextInput autoCorrect={true} /> // enables auto-correction
-   */
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -54,6 +33,26 @@ export default function App() {
       />
 
       <Text>My name is {username}</Text>
+
+      <View style={styles.switchContainer}>
+        {/*
+          Switch component for toggling dark mode.
+          - value: Controlled by isDarkMode state.
+          - onValueChange: Toggles the isDarkMode state.
+          - trackColor: Changes the track color based on the switch state.
+          - thumbColor: Changes the thumb color based on the switch state.
+        */}
+        <Text>Dark mode</Text>
+        <Switch
+          value={isDarkMode}
+          onValueChange={() => setIsDarkMode((prev) => !prev)}
+          trackColor={{
+            true: "lightblue",
+            false: "lightgray",
+          }}
+          thumbColor={isDarkMode ? "lightblue" : "lightgray"}
+        />
+      </View>
     </SafeAreaView>
   );
 }
@@ -75,5 +74,11 @@ const styles = StyleSheet.create({
   multilineInput: {
     minHeight: 100,
     textAlignVertical: "top", // because AOS, text is located at the center
+  },
+  switchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
   },
 });
