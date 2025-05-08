@@ -26,6 +26,15 @@ export default function App() {
     return Object.keys(errors).length === 0;
   };
 
+  const handleSubmit = () => {
+    if (validateForm()) {
+      console.log("Submitted", username, password);
+      setUsername("");
+      setPassword("");
+      setErrors({});
+    }
+  };
+
   /**
    * KeyboardAvoidingView ensures that the keyboard does not cover input fields when typing.
    * - behavior="padding": Moves the entire view up by the height of the keyboard when it appears.
