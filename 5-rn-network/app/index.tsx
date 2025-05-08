@@ -13,6 +13,7 @@ export default function App() {
   const [postList, setPostList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -32,6 +33,12 @@ export default function App() {
       setIsLoading(false);
       setError("Failed to fetch post list.");
     }
+  };
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchData(20);
+    setRefreshing(false);
   };
 
   if (isLoading) {
@@ -61,6 +68,10 @@ export default function App() {
           ListFooterComponent={
             <Text style={styles.footerText}>End of list</Text>
           }
+          // 'refreshing' controls the loading indicator for pull-to-refresh.
+          // 'onRefresh' is called when the user pulls down to refresh the list.
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
         />
       </View>
     </SafeAreaView>
