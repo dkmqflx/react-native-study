@@ -13,10 +13,17 @@ import {
 export default function App() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
 
-  const handleSubmit = () => {
-    console.log("Username:", username);
-    console.log("Password:", password);
+  const validateForm = () => {
+    let errors = {};
+
+    if (!username) errors.username = "Username is required";
+    if (!password) errors.password = "Password is required";
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0;
   };
 
   /**
@@ -53,6 +60,9 @@ export default function App() {
           value={username}
           onChangeText={setUsername}
         />
+        {errors.username ? (
+          <Text style={styles.errorText}>{errors.username}</Text>
+        ) : null}
 
         <Text style={styles.label}>Password</Text>
         <TextInput
@@ -62,6 +72,9 @@ export default function App() {
           onChangeText={setPassword}
           secureTextEntry
         />
+        {errors.password ? (
+          <Text style={styles.errorText}>{errors.password}</Text>
+        ) : null}
 
         <Button title="Login" onPress={handleSubmit} />
       </View>
@@ -108,5 +121,9 @@ const styles = StyleSheet.create({
     height: 400,
     alignSelf: "center",
     marginBottom: 50,
+  },
+  errorText: {
+    color: "red",
+    marginBottom: 10,
   },
 });
