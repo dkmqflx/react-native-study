@@ -1,28 +1,24 @@
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  SafeAreaView,
-  StyleSheet,
-  StatusBar,
-  TextInput,
   FlatList,
+  StyleSheet,
+  SafeAreaView,
+  StatusBar,
   ActivityIndicator,
+  TextInput,
   Button,
 } from "react-native";
-import { useEffect, useState } from "react";
 
-export default function App() {
+const App = () => {
   const [postList, setPostList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
   const [refreshing, setRefreshing] = useState(false);
-  const [isPosting, setIsPosting] = useState(false);
   const [postTitle, setPostTitle] = useState("");
   const [postBody, setPostBody] = useState("");
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const [isPosting, setIsPosting] = useState(false);
+  const [error, setError] = useState("");
 
   const fetchData = async (limit = 10) => {
     try {
@@ -68,6 +64,10 @@ export default function App() {
     setIsPosting(false);
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const handleRefresh = () => {
     setRefreshing(true);
     fetchData(20);
@@ -85,59 +85,71 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Post Title"
-          value={postTitle}
-          onChangeText={setPostTitle}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Post Body"
-          value={postBody}
-          onChangeText={setPostBody}
-        />
-        <Button
-          title={isPosting ? "Adding..." : "Add Post"}
-          onPress={addPost}
-          disabled={isPosting}
-        />
-      </View>
-
-      <View style={styles.listContainer}>
-        <FlatList
-          data={postList}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Text style={styles.nameText}>{item.title}</Text>
-              <Text style={styles.typeText}>{item.body}</Text>
-            </View>
-          )}
-          keyExtractor={(item) => item.id.toString()}
-          ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
-          ListEmptyComponent={<Text>No Posts Found</Text>}
-          ListHeaderComponent={<Text style={styles.headerText}>Post List</Text>}
-          ListFooterComponent={
-            <Text style={styles.footerText}>End of list</Text>
-          }
-          // 'refreshing' controls the loading indicator for pull-to-refresh.
-          // 'onRefresh' is called when the user pulls down to refresh the list.
-          refreshing={refreshing}
-          onRefresh={handleRefresh}
-        />
-      </View>
+      {error ? (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+        </View>
+      ) : (
+        <>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Post Title"
+              value={postTitle}
+              onChangeText={setPostTitle}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Post Body"
+              value={postBody}
+              onChangeText={setPostBody}
+            />
+            <Button
+              title={isPosting ? "Adding..." : "Add Post"}
+              onPress={addPost}
+              disabled={isPosting}
+            />
+          </View>
+          <View style={styles.listContainer}>
+            <FlatList
+              data={postList}
+              renderItem={({ item }) => (
+                <View style={styles.card}>
+                  <Text style={styles.nameText}>{item.title}</Text>
+                  <Text style={styles.typeText}>{item.body}</Text>
+                </View>
+              )}
+              keyExtractor={(item) => item.id.toString()}
+              ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+              ListEmptyComponent={<Text>No Posts Found</Text>}
+              ListHeaderComponent={
+                <Text style={styles.headerText}>Post List</Text>
+              }
+              ListFooterComponent={
+                <Text style={styles.footerText}>End of list</Text>
+              }
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+            />
+          </View>
+        </>
+      )}
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "lightblue",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingTop: StatusBar.currentHeight, // StatusBar.currentHeight is the height of the status bar for android
+    backgroundColor: "#F5F5F5",
+    paddingTop: StatusBar.currentHeight,
+  },
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: "#F5F5F5",
+    paddingTop: StatusBar.currentHeight,
+    justifyContent: "center", // Center the loading spinner
+    alignItems: "center", // Center the loading spinner
   },
   listContainer: {
     flex: 1,
@@ -166,13 +178,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 12,
   },
-  loadingContainer: {
-    flex: 1,
-    backgroundColor: "#F5F5F5",
-    paddingTop: StatusBar.currentHeight,
-    justifyContent: "center", // Center the loading spinner
-    alignItems: "center", // Center the loading spinner
-  },
   inputContainer: {
     backgroundColor: "#FFFFFF",
     padding: 16,
@@ -188,4 +193,19 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 8,
   },
+  errorContainer: {
+    backgroundColor: "#FFC0CB",
+    padding: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    margin: 16,
+    alignItems: "center",
+  },
+  errorText: {
+    color: "#D8000C",
+    fontSize: 16,
+    textAlign: "center",
+  },
 });
+
+export default App;
