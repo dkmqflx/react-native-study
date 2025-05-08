@@ -1,67 +1,66 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  StatusBar,
-  TextInput,
-  Switch,
-} from "react-native";
+import { View, Text, StyleSheet, TextInput, Button } from "react-native";
 
 export default function App() {
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const handleSubmit = () => {
+    console.log("Username:", username);
+    console.log("Password:", password);
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your name"
-        value={username}
-        onChangeText={setUsername}
-        secureTextEntry={false}
-        keyboardType="default"
-        autoCapitalize="none"
-        autoCorrect={false}
-      />
-      <TextInput
-        style={[styles.multilineInput, styles.input]}
-        placeholder="Enter your name"
-        multiline
-      />
+    <View style={styles.container}>
+      <View style={styles.form}>
+        <Text style={styles.label}>Username</Text>
 
-      <Text>My name is {username}</Text>
-
-      <View style={styles.switchContainer}>
-        {/*
-          Switch component for toggling dark mode.
-          - value: Controlled by isDarkMode state.
-          - onValueChange: Toggles the isDarkMode state.
-          - trackColor: Changes the track color based on the switch state.
-          - thumbColor: Changes the thumb color based on the switch state.
-        */}
-        <Text>Dark mode</Text>
-        <Switch
-          value={isDarkMode}
-          onValueChange={() => setIsDarkMode((prev) => !prev)}
-          trackColor={{
-            true: "lightblue",
-            false: "lightgray",
-          }}
-          thumbColor={isDarkMode ? "lightblue" : "lightgray"}
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your username"
+          value={username}
+          onChangeText={setUsername}
         />
+
+        <Text style={styles.label}>Password</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+
+        <Button title="Login" onPress={handleSubmit} />
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    paddingTop: StatusBar.currentHeight,
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    backgroundColor: "lightblue",
+  },
+  form: {
+    backgroundColor: "#ffffff",
+    padding: 20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5, // for Android
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 5,
+    fontWeight: "bold",
   },
   input: {
     height: 40,
@@ -70,15 +69,5 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 10,
     borderRadius: 5,
-  },
-  multilineInput: {
-    minHeight: 100,
-    textAlignVertical: "top", // because AOS, text is located at the center
-  },
-  switchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 10,
   },
 });
