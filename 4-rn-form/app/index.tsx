@@ -47,6 +47,12 @@ export default function App() {
         autoCapitalize="none"
         autoCorrect={false}
       />
+      <TextInput
+        style={[styles.multilineInput, styles.input]}
+        placeholder="Enter your name"
+        multiline
+      />
+
       <Text>My name is {username}</Text>
     </SafeAreaView>
   );
@@ -65,5 +71,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 10,
     borderRadius: 5,
+  },
+  multilineInput: {
+    minHeight: 100,
+    textAlignVertical: "top", // because AOS, text is located at the center
   },
 });
